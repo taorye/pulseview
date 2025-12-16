@@ -108,7 +108,6 @@ Device::Device(shared_ptr<sigrok::Configurable> configurable) :
 			break;
 
 		case SR_CONF_PATTERN_MODE:
-		case SR_CONF_BUFFERSIZE:
 		case SR_CONF_TRIGGER_SOURCE:
 		case SR_CONF_TRIGGER_SLOPE:
 		case SR_CONF_COUPLING:
@@ -116,6 +115,10 @@ Device::Device(shared_ptr<sigrok::Configurable> configurable) :
 		case SR_CONF_DATA_SOURCE:
 		case SR_CONF_EXTERNAL_CLOCK_SOURCE:
 			bind_enum(descr, "", key, capabilities, get, set);
+			break;
+
+		case SR_CONF_BUFFERSIZE:
+			bind_enum(QString::fromStdString(string("Channel count")), "", key, capabilities, get, set);
 			break;
 
 		case SR_CONF_FILTER:
