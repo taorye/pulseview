@@ -634,7 +634,7 @@ void View::reset_zero_position()
 		vector<util::Timestamp> triggers = session_.get_triggers(current_segment_);
 
 		if (triggers.size() > 0)
-			zero_offset_ = triggers.front();
+			zero_offset_ = -triggers.front();
 	}
 
 	custom_zero_offset_set_ = false;
@@ -2027,6 +2027,9 @@ void View::capture_state_updated(int state)
 		// After acquisition has stopped we need to re-calculate the ticks once
 		// as it's otherwise done when the user pans or zooms, which is too late
 		calculate_tick_spacing();
+
+		// Reset zero position to ensure GlobalSettings::Key_View_TriggerIsZeroTime can take effect
+		reset_zero_position();
 
 		// Reset "always zoom to fit", the acquisition has stopped
 		if (always_zoom_to_fit_) {
